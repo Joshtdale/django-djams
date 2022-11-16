@@ -1,63 +1,82 @@
 from django.shortcuts import render
 from django.http.response import Http404
-from rest_framework.views import APIView
-from .models import Song
-from .serializers import SongSerializer
+# from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from .models import *
+from .serializers import *
 from rest_framework.response import Response
 
-class SongAPIView(APIView):
-    def get_object(self, pk):
-        try:
-            return Song.objects.get(pk=pk)
-        except Song.DoesNotExist:
-            raise Http404
+class GenreViewSet(ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+    http_method_names = ['get', 'post']
 
-    # READ
-    def get(self, request, pk=None, format=None):
-        if pk:
-            data = self.get_object(pk)
-            serializer = SongSerializer(data)
+class SongViewSet(ModelViewSet):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+    http_method_names = ['get', 'post']
 
-        else: 
-            data = Song.objects.all()
-            serializer = SongSerializer(data, many=True)
+class ArtistViewSet(ModelViewSet):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    http_method_names = ['get', 'post']
 
-        return Response(serializer.data)
+# class SongAPIView(APIView):
+#     def get_object(self, pk):
+#         try:
+#             return Song.objects.get(pk=pk)
+#         except Song.DoesNotExist:
+#             raise Http404
 
-    # Create
-    def post(self, request, format=None):
-        data = request.data
-        serializer = SongSerializer(data=data)
+#     # READ
+#     def get(self, request, pk=None, format=None):
+#         if pk:
+#             data = self.get_object(pk)
+#             serializer = SongSerializer(data)
 
-        # validity check
-        serializer.is_valid(raise_exception=True)
+#         else: 
+#             data = Song.objects.all()
+#             serializer = SongSerializer(data, many=True)
 
-        # save
-        serializer.save()
+#         return Response(serializer.data)
 
-        # frontend result
-        response = Response()
+#     # Create
+#     def post(self, request, format=None):
+#         data = request.data
+#         serializer = SongSerializer(data=data)
 
-        response.data = {
-            'message': 'Song Created Successfully',
-            'data': serializer.data
-        }
+#         # validity check
+#         serializer.is_valid(raise_exception=True)
 
-        return response
+#         # save
+#         serializer.save()
 
-    def put(self, request, pk=None, format=None):
-        Song_update = Song.objects.get(pk=pk)
-        data = request.data
-        serializer = SongSerializer(instance=Song_update, data=data, partial=True)
+#         # frontend result
+#         response = Response()
+
+#         response.data = {
+#             'message': 'Song Created Successfully',
+#             'data': serializer.data
+#         }
+
+#         return response
+
+    # def put(self, request, pk=None, format=None):
+    #     Song_update = Song.objects.get(pk=pk)
+    #     data = request.data
+    #     serializer = SongSerializer(instance=Song_update, data=data, partial=True)
         
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
 
-        response = Response()
+    #     response = Response()
 
-        response.data = {
-            'message': 'Song successfully updated',
-            'data': serializer.data
-        }
+    #     response.data = {
+    #         'message': 'Song successfully updated',
+    #         'data': serializer.data
+    #     }
 
-        return response
+    #     return response
+
+
+
