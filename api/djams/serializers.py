@@ -41,8 +41,9 @@ class SongSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         genre = validated_data.pop('genre')
         # print(genre)
-        artist = validated_data.pop('artist')[0]
-
+        artists = validated_data.pop('artist')
+        
+        
 
         # loop over artist and perform 
         # art_instance = Artist.objects.get(name=artist['name'])
@@ -53,8 +54,11 @@ class SongSerializer(serializers.ModelSerializer):
         # if genre:
         gen_instance, created = Genre.objects.get_or_create(name=genre['name'])
         song = Song.objects.create(**validated_data, genre=gen_instance)
-        art_instance, created = Artist.objects.get_or_create(name=artist['name'])
-        song.artist.add(art_instance)
+        for artist in artists:
+            art_instance, created = Artist.objects.get_or_create(name=artist['name'])
+            song.artist.add(art_instance)
+        # art_instance, created = Artist.objects.get_or_create(name=artist['name'])
+        # song.artist.add(art_instance)
             # return song
         # elif artist:
         # artist = validated_data.pop('artist')
