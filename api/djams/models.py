@@ -7,6 +7,8 @@ class Song(models.Model):
     name = models.CharField(max_length=30, null=False)
     duration = models.FloatField(null=True, blank=True)
     track_number = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    genre = models.ForeignKey('Genre', on_delete=models.PROTECT, null=True, blank=True)
+    artist = models.ManyToManyField('Artist')
 
 class Album(models.Model):
     name = models.CharField(max_length=30, null=False)
