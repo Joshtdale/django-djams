@@ -5,6 +5,7 @@ from rest_framework import routers
 router = routers.SimpleRouter()
 router.register(r'genre', GenreViewSet)
 router.register(r'song', SongViewSet)
+router.register(r'artist', ArtistViewSet)
 
 urlpatterns = [
     # path('song/', SongAPIView.as_view()),
