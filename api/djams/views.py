@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http.response import Http404
 # from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, mixins, ViewSet
 from .models import *
 from .serializers import *
 from rest_framework.response import Response
@@ -14,7 +14,16 @@ class GenreViewSet(ModelViewSet):
 class SongViewSet(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-    http_method_names = ['get', 'post']
+    # http_method_names = ['get', 'post', 'put']
+
+    # def update(self, request, *args, **kwargs):
+    #     kwargs['partial'] = True
+    #     return super().update(request, *args, **kwargs)
+
+# class SongViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin):
+#     serializer_class = SongSerializer
+#     queryset = Song.objects.all()
+    
 
 class ArtistViewSet(ModelViewSet):
     queryset = Artist.objects.all()

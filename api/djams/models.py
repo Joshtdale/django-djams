@@ -10,7 +10,7 @@ class Song(models.Model):
     genre = models.ForeignKey('Genre', on_delete=models.PROTECT, null=True, blank=True)
     artist = models.ManyToManyField('Artist')
     album =  models.ManyToManyField('Album')
-    playlist = models.ManyToManyField('Playlist')
+    # playlist = models.ManyToManyField('Playlist')
 
 class Album(models.Model):
     name = models.CharField(max_length=30, null=False)
