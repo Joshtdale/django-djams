@@ -21,6 +21,11 @@ class ArtistViewSet(ModelViewSet):
     serializer_class = ArtistSerializer
     http_method_names = ['get', 'post']
 
+class AlbumViewSet(ModelViewSet):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer
+    http_method_names = ['get', 'post']
+
 # class SongAPIView(APIView):
 #     def get_object(self, pk):
 #         try:

@@ -28,40 +28,37 @@ class AlbumSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
     genre = GenreSerializer()
     artist = ArtistSerializer(many=True)
+    album = AlbumSerializer(many=True)
     class Meta:
         model = Song
         fields = (
             'name',
             'track_number',
             'artist',
+            'album',
             'duration', 
             'genre'
             )
 
     def create(self, validated_data):
         genre = validated_data.pop('genre')
-        # print(genre)
         artists = validated_data.pop('artist')
-        
-        
+        # albums = validated_data.pop('album')
 
-        # loop over artist and perform 
-        # art_instance = Artist.objects.get(name=artist['name'])
-        # song.artist.add(art_instance)
-
-
-
-        # if genre:
         gen_instance, created = Genre.objects.get_or_create(name=genre['name'])
         song = Song.objects.create(**validated_data, genre=gen_instance)
+        
         for artist in artists:
             art_instance, created = Artist.objects.get_or_create(name=artist['name'])
             song.artist.add(art_instance)
-        # art_instance, created = Artist.objects.get_or_create(name=artist['name'])
-        # song.artist.add(art_instance)
-            # return song
-        # elif artist:
-        # artist = validated_data.pop('artist')
-        # song2 = Song.objects.create(**validated_data, artist=art_instance)
+        # for album in albums:
+        #     alb_instance, created = Album.objects.get_or_create(name=album['name'])
+        #     song.album.add(alb_instance)
+
         return song
+        # return "Created successfully"
+        # return { 
+        #         "message": "Created successfully",
+        #         "song": song
+        #     }
 

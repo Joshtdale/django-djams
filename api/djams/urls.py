@@ -6,6 +6,7 @@ router = routers.SimpleRouter()
 router.register(r'genre', GenreViewSet)
 router.register(r'song', SongViewSet)
 router.register(r'artist', ArtistViewSet)
+router.register(r'album', AlbumViewSet)
 
 urlpatterns = [
     # path('song/', SongAPIView.as_view()),
