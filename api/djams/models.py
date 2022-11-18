@@ -9,10 +9,12 @@ class Song(models.Model):
     track_number = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     genre = models.ForeignKey('Genre', on_delete=models.PROTECT, null=True, blank=True)
     artist = models.ManyToManyField('Artist')
-    playlist = models.ManyToManyField('Playlist')
+    album =  models.ManyToManyField('Album')
+    # playlist = models.ManyToManyField('Playlist')
 
 class Album(models.Model):
     name = models.CharField(max_length=30, null=False)
+    artist = models.ManyToManyField('Artist')
 
 class Artist(models.Model):
     name = models.CharField(max_length=30, null=False)
