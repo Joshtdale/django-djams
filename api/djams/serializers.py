@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from .fields import GenreField, ArtistField
 
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,12 +30,15 @@ class AlbumSerializer(serializers.ModelSerializer):
 
 
 class SongSerializer(serializers.ModelSerializer):
-    genre = GenreSerializer()
-    artist = ArtistSerializer(many=True)
+    # genre = GenreSerializer()
+    # artist = ArtistSerializer(many=True)
     album = AlbumSerializer(many=True)
+    genre = GenreField(queryset=Genre.objects.all())
+    artist = ArtistField(many=True, queryset=Artist.objects.all())
     class Meta:
         model = Song
         fields = (
+            'id',
             'name',
             'track_number',
             'artist',
@@ -43,46 +47,46 @@ class SongSerializer(serializers.ModelSerializer):
             'genre'
             )
 
-    def create(self, validated_data):
-        genre = validated_data.pop('genre')
-        artists = validated_data.pop('artist')
-        albums = validated_data.pop('album')
+    # def create(self, validated_data):
+    #     genre = validated_data.pop('genre')
+    #     artists = validated_data.pop('artist')
+    #     albums = validated_data.pop('album')
 
-        gen_instance, created = Genre.objects.get_or_create(name=genre['name'])
-        song = Song.objects.create(**validated_data, genre=gen_instance)
+    #     gen_instance, created = Genre.objects.get_or_create(name=genre['name'])
+    #     song = Song.objects.create(**validated_data, genre=gen_instance)
 
-        for artist in artists:
-            art_instance, created = Artist.objects.get_or_create(name=artist['name'])
-            song.artist.add(art_instance)
-        for album in albums:
-            alb_instance, created = Album.objects.get_or_create(name=album['name'])
-            song.album.add(alb_instance)
+    #     for artist in artists:
+    #         art_instance, created = Artist.objects.get_or_create(name=artist['name'])
+    #         song.artist.add(art_instance)
+    #     for album in albums:
+    #         alb_instance, created = Album.objects.get_or_create(name=album['name'])
+    #         song.album.add(alb_instance)
 
-        return song
+    #     return song
         # return "Created successfully"
         # return { 
         #         "message": "Created successfully",
         #         "song": song
         #     }
 
-    def update(self, instance, validated_data):
-        genre_data = validated_data.pop('genre')
-        artists_data = validated_data.pop('artist')
-        # albums_data = validated_data.pop('album_musician')
-        artists = (instance.artist).all()
-        artists = list(artists)
-        instance.name = validated_data.get('name', instance.name)
-        instance.track_number = validated_data.get('track_number', instance.track_number)
-        instance.artist = validated_data.get('artist', instance.artist)
-        instance.save()
+    # def update(self, instance, validated_data):
+    #     genre_data = validated_data.pop('genre')
+    #     artists_data = validated_data.pop('artist')
+    #     # albums_data = validated_data.pop('album_musician')
+    #     artists = (instance.artist).all()
+    #     artists = list(artists)
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.track_number = validated_data.get('track_number', instance.track_number)
+    #     instance.artist = validated_data.get('artist', instance.artist)
+    #     instance.save()
 
-        for artist_data in artists_data:
-            artist = artists.pop(0)
-            artist.name = artist_data.get('name', artist.name)
+        # for artist_data in artists_data:
+        #     artist = artists.pop(0)
+        #     artist.name = artist_data.get('name', artist.name)
             # artist.release_date = artist_data.get('release_date', artist.release_date)
             # artist.num_stars = artist_data.get('num_stars', artist.num_stars)
-            artist.set()
-        return instance
+        #     artist.set()
+        # return instance
 
     # class Album(models.Model):
         # artist = models.ForeignKey(Musician, on_delete=models.CASCADE, related_name='album_musician', null=True, blank=True)

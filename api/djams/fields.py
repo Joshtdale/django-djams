@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-
 class GenreField(serializers.RelatedField):
     def to_internal_value(self, data):
         obj, created = Genre.objects.get_or_create(**data)
