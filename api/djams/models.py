@@ -14,6 +14,7 @@ class Song(models.Model):
 
 class Album(models.Model):
     name = models.CharField(max_length=30, null=False)
+    artist = models.ManyToManyField('Artist')
 
 class Artist(models.Model):
     name = models.CharField(max_length=30, null=False)
